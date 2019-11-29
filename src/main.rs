@@ -35,7 +35,6 @@ mod tests {
         assert_eq!(vec!["This is a pen."], decompress_regex("This is a pen."));
     }
 
-    // TODO: Test for only one character with `?'.
     #[test]
     fn test_string_with_one_question_symbol() {
         assert_eq!(vec!["hello!", "hello"], decompress_regex("hello!?"));
@@ -43,6 +42,7 @@ mod tests {
             vec!["hello! world", "hello world"],
             decompress_regex("hello!? world")
         );
+        assert_eq!(vec!["a", ""], decompress_regex("a?"));
     }
 
     // TODO: Make wrapper of assert_eq! which doesn't consider order of elements.
