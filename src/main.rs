@@ -7,18 +7,21 @@ fn decompress_regex(regex: &str) -> Vec<String> {
 
     let mut num_kinds = 1;
     for c in regex.chars() {
-        if c == '?' {
-            for i in 0..num_kinds {
-                decompressed_strings.push(decompressed_strings[i].clone());
-            }
-            num_kinds *= 2;
+        match c {
+            '?' => {
+                for i in 0..num_kinds {
+                    decompressed_strings.push(decompressed_strings[i].clone());
+                }
+                num_kinds *= 2;
 
-            for i in num_kinds / 2..num_kinds {
-                decompressed_strings[i].pop();
+                for i in num_kinds / 2..num_kinds {
+                    decompressed_strings[i].pop();
+                }
             }
-        } else {
-            for idx in 0..num_kinds {
-                decompressed_strings[idx].push(c);
+            _ => {
+                for idx in 0..num_kinds {
+                    decompressed_strings[idx].push(c);
+                }
             }
         }
     }
