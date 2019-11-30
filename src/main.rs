@@ -81,4 +81,13 @@ mod tests {
             decompress_regex("Yahoo!|Google|Bing|Nifty")
         );
     }
+
+    #[test]
+    fn test_with_question_marks_and_bars() {
+        assert_eq!(vec!["ab", "a", "c"], decompress_regex("ab?|c"));
+        assert_eq!(
+            vec!["abc", "ab", "def", "ef"],
+            decompress_regex("abc?|d?ef")
+        );
+    }
 }
