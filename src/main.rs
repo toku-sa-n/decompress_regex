@@ -9,7 +9,16 @@ fn decompress_regex(regex: &str) -> Result<Vec<String>, &'static str> {
 
     for i in 0..regex.chars().count() {
         match regex.chars().nth(i) {
-            Some('?') => purse_question_mark(&mut decompressed_strings),
+            Some('?') => {
+                // `ab??' is a valid regex. It matches with both of 'a' and 'ab'.
+                // However if the given sentence contains both of 'a' and 'ab' then
+                // it matches 'a', not 'ab'. (not greedy `?')
+                if i >= 1 && regex.chars().nth(i - 1) == Some('?') {
+                    continue;
+                }
+
+                purse_question_mark(&mut decompressed_strings);
+            }
             Some('|') => {
                 decompressed_strings.append(&mut decompress_regex(&regex[i + 1..])?);
                 break;
@@ -91,6 +100,15 @@ mod tests {
         );
         assert_eq!(
             decompress_regex("a?b?c?"),
+            Ok(vec_of_strings!["abc", "bc", "ac", "c", "ab", "b", "a", ""]),
+        );
+    }
+
+    #[test]
+    fn teset_string_with_consecutive_question_symbols() {
+        assert_eq!(decompress_regex("ab??"), Ok(vec_of_strings!["ab", "a"]),);
+        assert_eq!(
+            decompress_regex("a??b?c?"),
             Ok(vec_of_strings!["abc", "bc", "ac", "c", "ab", "b", "a", ""]),
         );
     }
