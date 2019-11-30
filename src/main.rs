@@ -8,16 +8,7 @@ fn decompress_regex(regex: &str) -> Vec<String> {
     let mut num_kinds = 1;
     for c in regex.chars() {
         match c {
-            '?' => {
-                for i in 0..num_kinds {
-                    decompressed_strings.push(decompressed_strings[i].clone());
-                }
-                num_kinds *= 2;
-
-                for i in num_kinds / 2..num_kinds {
-                    decompressed_strings[i].pop();
-                }
-            }
+            '?' => purse_question_mark(&mut decompressed_strings, &mut num_kinds),
             _ => {
                 for idx in 0..num_kinds {
                     decompressed_strings[idx].push(c);
@@ -26,6 +17,19 @@ fn decompress_regex(regex: &str) -> Vec<String> {
         }
     }
     decompressed_strings
+}
+
+// TODO: Deal with side effects.
+fn purse_question_mark(strings: &mut Vec<String>, num_kinds: &mut usize) -> () {
+    for i in 0..*num_kinds {
+        strings.push(strings[i].clone());
+    }
+
+    *num_kinds *= 2;
+
+    for i in *num_kinds / 2..*num_kinds {
+        strings[i].pop();
+    }
 }
 
 #[cfg(test)]
