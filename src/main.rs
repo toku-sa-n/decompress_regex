@@ -38,15 +38,20 @@ fn purse_question_mark(strings: &mut Vec<String>) -> () {
 mod tests {
     use super::*;
 
+    // From https://stackoverflow.com/questions/38183551/concisely-initializing-a-vector-of-strings
+    macro_rules! vec_of_strings{
+        ($($x:expr),*)=>(vec![$($x.to_string()),*]);
+    }
+
     #[test]
     fn test_string_with_no_regex_symbols() {
         assert_eq!(
             decompress_regex("hello, world!"),
-            Ok(vec![String::from("hello, world!")])
+            Ok(vec_of_strings!["hello, world!"])
         );
         assert_eq!(
             decompress_regex("This is a pen."),
-            Ok(vec![String::from("This is a pen.")])
+            Ok(vec_of_strings!["This is a pen."])
         );
     }
 
@@ -54,19 +59,13 @@ mod tests {
     fn test_string_with_one_question_symbol() {
         assert_eq!(
             decompress_regex("hello!?"),
-            Ok(vec![String::from("hello!"), String::from("hello")])
+            Ok(vec_of_strings!["hello!", "hello"])
         );
         assert_eq!(
             decompress_regex("hello!? world"),
-            Ok(vec![
-                String::from("hello! world"),
-                String::from("hello world")
-            ]),
+            Ok(vec_of_strings!["hello! world", "hello world"]),
         );
-        assert_eq!(
-            decompress_regex("a?"),
-            Ok(vec![String::from("a"), String::from("")])
-        );
+        assert_eq!(decompress_regex("a?"), Ok(vec_of_strings!["a", ""]));
     }
 
     // TODO: Make wrapper of assert_eq! which doesn't consider order of elements.
@@ -74,58 +73,29 @@ mod tests {
     fn test_string_with_multiple_question_symbols() {
         assert_eq!(
             decompress_regex("Y?a?hoo!"),
-            Ok(vec![
-                String::from("Yahoo!"),
-                String::from("ahoo!"),
-                String::from("Yhoo!"),
-                String::from("hoo!")
-            ]),
+            Ok(vec_of_strings!["Yahoo!", "ahoo!", "Yhoo!", "hoo!"]),
         );
         assert_eq!(
             decompress_regex("a?b?c?"),
-            Ok(vec![
-                String::from("abc"),
-                String::from("bc"),
-                String::from("ac"),
-                String::from("c"),
-                String::from("ab"),
-                String::from("b"),
-                String::from("a"),
-                String::from("")
-            ]),
+            Ok(vec_of_strings!["abc", "bc", "ac", "c", "ab", "b", "a", ""]),
         );
     }
 
     #[test]
     fn test_string_with_one_bar() {
-        assert_eq!(
-            decompress_regex("f|g"),
-            Ok(vec![String::from("f"), String::from("g")])
-        );
-        assert_eq!(
-            decompress_regex("ka|ono"),
-            Ok(vec![String::from("ka"), String::from("ono")])
-        );
+        assert_eq!(decompress_regex("f|g"), Ok(vec_of_strings!["f", "g"]));
+        assert_eq!(decompress_regex("ka|ono"), Ok(vec_of_strings!["ka", "ono"]));
     }
 
     #[test]
     fn test_string_with_multiple_bar() {
         assert_eq!(
             decompress_regex("a|b|c"),
-            Ok(vec![
-                String::from("a"),
-                String::from("b"),
-                String::from("c")
-            ])
+            Ok(vec_of_strings!["a", "b", "c"])
         );
         assert_eq!(
             decompress_regex("Yahoo!|Google|Bing|Nifty"),
-            Ok(vec![
-                String::from("Yahoo!"),
-                String::from("Google"),
-                String::from("Bing"),
-                String::from("Nifty")
-            ]),
+            Ok(vec_of_strings!["Yahoo!", "Google", "Bing", "Nifty"]),
         );
     }
 
@@ -133,20 +103,11 @@ mod tests {
     fn test_with_question_marks_and_bars() {
         assert_eq!(
             decompress_regex("ab?|c"),
-            Ok(vec![
-                String::from("ab"),
-                String::from("a"),
-                String::from("c")
-            ])
+            Ok(vec_of_strings!["ab", "a", "c"])
         );
         assert_eq!(
             decompress_regex("abc?|d?ef"),
-            Ok(vec![
-                String::from("abc"),
-                String::from("ab"),
-                String::from("def"),
-                String::from("ef")
-            ]),
+            Ok(vec_of_strings!["abc", "ab", "def", "ef"]),
         );
     }
 }
