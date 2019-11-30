@@ -72,4 +72,13 @@ mod tests {
         assert_eq!(vec!["f", "g"], decompress_regex("f|g"));
         assert_eq!(vec!["ka", "ono"], decompress_regex("ka|ono"));
     }
+
+    #[test]
+    fn test_string_with_multiple_bar() {
+        assert_eq!(vec!["a", "b", "c"], decompress_regex("a|b|c"));
+        assert_eq!(
+            vec!["Yahoo!", "Google", "Bing", "Nifty"],
+            decompress_regex("Yahoo!|Google|Bing|Nifty")
+        );
+    }
 }
