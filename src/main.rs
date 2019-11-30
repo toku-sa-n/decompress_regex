@@ -147,5 +147,6 @@ mod tests {
     fn test_invalid_use_of_question_mark() {
         assert_eq!(decompress_regex("?this"), Err("Invalid use of `?'."),);
         assert_eq!(decompress_regex("This|?That"), Err("Invalid use of `?'."),);
+        assert_eq!(decompress_regex("This???"), Err("Invalid use of `?'."),);
     }
 }
