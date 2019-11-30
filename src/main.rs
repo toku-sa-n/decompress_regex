@@ -13,7 +13,8 @@ fn main() {
 
         match decompress_regex(&line) {
             Ok(results) => {
-                for result in results {
+                let uniq: std::collections::HashSet<String> = results.into_iter().collect();
+                for result in uniq {
                     println!("{}", result);
                 }
             }
