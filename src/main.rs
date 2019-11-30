@@ -5,14 +5,19 @@ fn main() {
 fn decompress_regex(regex: &str) -> Vec<String> {
     let mut decompressed_strings: Vec<String> = vec![String::from("")];
 
-    for c in regex.chars() {
-        match c {
-            '?' => purse_question_mark(&mut decompressed_strings),
-            _ => {
+    for i in 0..regex.chars().count() {
+        match regex.chars().nth(i) {
+            Some('?') => purse_question_mark(&mut decompressed_strings),
+            Some('|') => {
+                decompressed_strings.append(&mut decompress_regex(&regex[i + 1..]));
+                break;
+            }
+            Some(c) => {
                 for idx in 0..decompressed_strings.len() {
                     decompressed_strings[idx].push(c);
                 }
             }
+            _ => (),
         }
     }
     decompressed_strings
@@ -59,6 +64,30 @@ mod tests {
         assert_eq!(
             vec!["abc", "bc", "ac", "c", "ab", "b", "a", ""],
             decompress_regex("a?b?c?")
+        );
+    }
+
+    #[test]
+    fn test_string_with_one_bar() {
+        assert_eq!(vec!["f", "g"], decompress_regex("f|g"));
+        assert_eq!(vec!["ka", "ono"], decompress_regex("ka|ono"));
+    }
+
+    #[test]
+    fn test_string_with_multiple_bar() {
+        assert_eq!(vec!["a", "b", "c"], decompress_regex("a|b|c"));
+        assert_eq!(
+            vec!["Yahoo!", "Google", "Bing", "Nifty"],
+            decompress_regex("Yahoo!|Google|Bing|Nifty")
+        );
+    }
+
+    #[test]
+    fn test_with_question_marks_and_bars() {
+        assert_eq!(vec!["ab", "a", "c"], decompress_regex("ab?|c"));
+        assert_eq!(
+            vec!["abc", "ab", "def", "ef"],
+            decompress_regex("abc?|d?ef")
         );
     }
 }
