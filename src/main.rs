@@ -40,54 +40,54 @@ mod tests {
 
     #[test]
     fn test_string_with_no_regex_symbols() {
-        assert_eq!(vec!["hello, world!"], decompress_regex("hello, world!"));
-        assert_eq!(vec!["This is a pen."], decompress_regex("This is a pen."));
+        assert_eq!(decompress_regex("hello, world!"), vec!["hello, world!"]);
+        assert_eq!(decompress_regex("This is a pen."), vec!["This is a pen."]);
     }
 
     #[test]
     fn test_string_with_one_question_symbol() {
-        assert_eq!(vec!["hello!", "hello"], decompress_regex("hello!?"));
+        assert_eq!(decompress_regex("hello!?"), vec!["hello!", "hello"]);
         assert_eq!(
-            vec!["hello! world", "hello world"],
             decompress_regex("hello!? world")
+            vec!["hello! world", "hello world"],
         );
-        assert_eq!(vec!["a", ""], decompress_regex("a?"));
+        assert_eq!(decompress_regex("a?"), vec!["a", ""]);
     }
 
     // TODO: Make wrapper of assert_eq! which doesn't consider order of elements.
     #[test]
     fn test_string_with_multiple_question_symbols() {
         assert_eq!(
-            vec!["Yahoo!", "ahoo!", "Yhoo!", "hoo!"],
             decompress_regex("Y?a?hoo!")
+            vec!["Yahoo!", "ahoo!", "Yhoo!", "hoo!"],
         );
         assert_eq!(
-            vec!["abc", "bc", "ac", "c", "ab", "b", "a", ""],
             decompress_regex("a?b?c?")
+            vec!["abc", "bc", "ac", "c", "ab", "b", "a", ""],
         );
     }
 
     #[test]
     fn test_string_with_one_bar() {
-        assert_eq!(vec!["f", "g"], decompress_regex("f|g"));
-        assert_eq!(vec!["ka", "ono"], decompress_regex("ka|ono"));
+        assert_eq!(decompress_regex("f|g"), vec!["f", "g"]);
+        assert_eq!(decompress_regex("ka|ono"), vec!["ka", "ono"]);
     }
 
     #[test]
     fn test_string_with_multiple_bar() {
-        assert_eq!(vec!["a", "b", "c"], decompress_regex("a|b|c"));
+        assert_eq!(decompress_regex("a|b|c"), vec!["a", "b", "c"]);
         assert_eq!(
-            vec!["Yahoo!", "Google", "Bing", "Nifty"],
             decompress_regex("Yahoo!|Google|Bing|Nifty")
+            vec!["Yahoo!", "Google", "Bing", "Nifty"],
         );
     }
 
     #[test]
     fn test_with_question_marks_and_bars() {
-        assert_eq!(vec!["ab", "a", "c"], decompress_regex("ab?|c"));
+        assert_eq!(decompress_regex("ab?|c"), vec!["ab", "a", "c"]);
         assert_eq!(
-            vec!["abc", "ab", "def", "ef"],
             decompress_regex("abc?|d?ef")
+            vec!["abc", "ab", "def", "ef"],
         );
     }
 }
