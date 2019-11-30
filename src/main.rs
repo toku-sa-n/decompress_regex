@@ -1,5 +1,27 @@
 fn main() {
-    println!("Hello, world!");
+    loop {
+        let mut line = String::new();
+        if std::io::stdin()
+            .read_line(&mut line)
+            .expect("Failed to read line")
+            == 0
+        {
+            break;
+        }
+
+        line.pop();
+
+        match decompress_regex(&line) {
+            Ok(results) => {
+                for result in results {
+                    println!("{}", result);
+                }
+            }
+            Err(e) => {
+                eprintln!("Error decompressing line: {}", e);
+            }
+        }
+    }
 }
 
 fn decompress_regex(regex: &str) -> Result<Vec<String>, &'static str> {
