@@ -8,6 +8,10 @@ fn decompress_regex(regex: &str) -> Vec<String> {
     for i in 0..regex.chars().count() {
         match regex.chars().nth(i) {
             Some('?') => purse_question_mark(&mut decompressed_strings),
+            Some('|') => {
+                decompressed_strings.append(&mut decompress_regex(&regex[i + 1..]));
+                break;
+            }
             Some(c) => {
                 for idx in 0..decompressed_strings.len() {
                     decompressed_strings[idx].push(c);
@@ -66,6 +70,6 @@ mod tests {
     #[test]
     fn test_string_with_one_bar() {
         assert_eq!(vec!["f", "g"], decompress_regex("f|g"));
-        assert_eq!(vec!["kano", "kono"], decompress_regex("ka|ono"));
+        assert_eq!(vec!["ka", "ono"], decompress_regex("ka|ono"));
     }
 }
