@@ -5,6 +5,8 @@ fn main() {
 fn decompress_regex(regex: &str) -> Result<Vec<String>, &'static str> {
     let mut decompressed_strings: Vec<String> = vec![String::from("")];
 
+    check_valid_use_of_question(regex)?;
+
     for i in 0..regex.chars().count() {
         match regex.chars().nth(i) {
             Some('?') => purse_question_mark(&mut decompressed_strings),
@@ -21,6 +23,18 @@ fn decompress_regex(regex: &str) -> Result<Vec<String>, &'static str> {
         }
     }
     Ok(decompressed_strings)
+}
+
+fn check_valid_use_of_question(str: &str) -> Result<(), &'static str> {
+    if str.chars().nth(0) == Some('?') {
+        return Err("Invalid use of `?'.");
+    }
+
+    if str.find("???") != None {
+        return Err("Invalid use of `?'.");
+    }
+
+    Ok(())
 }
 
 // TODO: Deal with side effects.
@@ -109,5 +123,11 @@ mod tests {
             decompress_regex("abc?|d?ef"),
             Ok(vec_of_strings!["abc", "ab", "def", "ef"]),
         );
+    }
+
+    #[test]
+    fn test_invalid_use_of_question_mark() {
+        assert_eq!(decompress_regex("?this"), Err("Invalid use of `?'."),);
+        assert_eq!(decompress_regex("This|?That"), Err("Invalid use of `?'."),);
     }
 }
