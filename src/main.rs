@@ -57,4 +57,9 @@ mod tests {
             decompress_regex("a?b?c?")
         );
     }
+
+    #[test]
+    fn test_string_with_one_bar() {
+        assert_eq!(vec!["f", "g"], decompress_regex("f|g"));
+    }
 }
