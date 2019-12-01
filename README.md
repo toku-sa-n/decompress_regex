@@ -1,6 +1,11 @@
 # decompress_regex
 A tool which lists all sentences which match the inputted regex.
 
+## How to install
+```shell
+cargo install deregex
+```
+
 ## How to use
 Run `deregex` and type regex from stdin.
 
