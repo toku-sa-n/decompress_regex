@@ -43,6 +43,8 @@ fn decompress_regex(regex: &str) -> Result<Vec<String>, &'static str> {
                 purse_question_mark(&mut decompressed_strings);
             }
             Some('|') => {
+                // Don't panic! This code won't panic even if a sentence ending with `|' is
+                // inputted.
                 decompressed_strings.append(&mut decompress_regex(&regex[i + 1..])?);
                 break;
             }
