@@ -1,7 +1,13 @@
 [package]
-name = "decompress_regex"
+name = "deregex"
 version = "0.1.0"
 authors = ["toku-sa-n <42336339+toku-sa-n@users.noreply.github.com>"]
+license = "MIT or Apache License 2.0"
+description = "A tool to show all possible and shortest strings which matches the given regex."
+readme = "README.md"
+homepage = "https://github.com/toku-sa-n/deregex"
+repository = "https://github.com/toku-sa-n/deregex"
+keywords = ["regex"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
