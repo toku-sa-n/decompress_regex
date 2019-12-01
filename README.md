@@ -1,4 +1,4 @@
-# decompress_regex
+# Deregex
 A tool which lists all sentences which match the inputted regex.
 
 ## How to install
