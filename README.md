@@ -15,7 +15,7 @@ Run `deregex` and type regex from stdin.
 | ?      | Repeat just before character 0 times or once | abc?     | abc ab                   |
 | \|     | Match before \| or after \|                  | foo\|bar | foo bar                  |
 
-** No ascii characters are not supported! **
+** No ascii characters are supported! **
 
 ## Example
 ```shell
